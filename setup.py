@@ -1,9 +1,9 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
     name='flash',
     version='0.1',
-    packages=find_packages(),
+    py_modules=['flash'],
     install_requires=[
         'numpy',
         'pandas',
