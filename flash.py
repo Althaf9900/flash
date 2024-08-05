@@ -31,7 +31,7 @@ def _handle_dataframe_errors(df: pd.DataFrame) -> pd.DataFrame:
     if df.empty:
         raise ValueError("DataFrame object cannot be empty")
 
-def get_categorical_features(df: pd.DataFrame,
+def get_cat_col(df: pd.DataFrame,
                              unique_value_threshold: Optional[int] = 12,
                              ignore_cols: Optional[str] = None) -> List[str]:
     """
@@ -75,7 +75,7 @@ def get_categorical_features(df: pd.DataFrame,
 
     return categorical_features
 
-def get_numerical_features(df: pd.DataFrame, unique_value_threshold: Optional[int] = 12,
+def get_num_col(df: pd.DataFrame, unique_value_threshold: Optional[int] = 12,
                            ignore_cols: Optional[str] = None) -> List[str]:
     """
     Identify numerical features in a DataFrame.
@@ -109,7 +109,7 @@ def get_numerical_features(df: pd.DataFrame, unique_value_threshold: Optional[in
 
     return numerical_features
 
-def get_binary_features(df: pd.DataFrame,
+def get_binary_col(df: pd.DataFrame,
                          categorical_feature_list: Optional[list] = None,
                          ignore_cols: Optional[str] = None) -> List[str]:
     """
@@ -157,7 +157,7 @@ def get_binary_features(df: pd.DataFrame,
 
     return binary_features
 
-def find_single_value_features(
+def find_single_value_col(
     df: pd.DataFrame,
     feature_list: Optional[List[str]] = None,
     remove: bool = False,
@@ -202,7 +202,7 @@ def find_single_value_features(
     else:
         return single_value_features
 
-def plot_num_features(df, num_feature_list=None, figsize=None, column_size = None):
+def plot_num_col(df, num_feature_list=None, figsize=None, column_size = None):
     # Plotting histograms of numerical features in the dataset
 
     if figsize is None:
@@ -221,7 +221,7 @@ def plot_num_features(df, num_feature_list=None, figsize=None, column_size = Non
     plt.tight_layout()
     plt.show()
 
-def find_duplicate_cols(df):
+def find_duplicate_col(df):
     columns = df.columns.tolist()
     duplicate_cols = []
     for i in range(len(columns)):
