@@ -31,28 +31,8 @@ def _handle_dataframe_errors(df: pd.DataFrame) -> pd.DataFrame:
     if df.empty:
         raise ValueError("DataFrame object cannot be empty")
 
-def get_cat_col(df: pd.DataFrame,
-                             unique_value_threshold: Optional[int] = 12,
-                             ignore_cols: Optional[str] = None) -> List[str]:
-    """
-    Identify categorical features in a DataFrame.
-
-    Parameters:
-    ----------
-    df : pd.DataFrame
-        The DataFrame to analyze.
-    unique_value_threshold : Optional[int], optional
-        The maximum number of unique values a numerical column can have to be considered
-        categorical.
-        Defaults to 10% of the total rows.
-    ignore_cols : Optional[str], optional
-        The target feature to exclude from analysis, by default None.
-
-    Returns:
-    -------
-    List[str]
-        A list of column names considered categorical.
-    """
+def get_cat_col(df: pd.DataFrame, unique_value_threshold: Optional[int] = 12, ignore_cols: Optional[str] = None) -> List[str]:
+    
     _handle_dataframe_errors(df)
 
     if ignore_cols and ignore_cols in df.columns:
@@ -75,27 +55,8 @@ def get_cat_col(df: pd.DataFrame,
 
     return categorical_features
 
-def get_num_col(df: pd.DataFrame, unique_value_threshold: Optional[int] = 12,
-                           ignore_cols: Optional[str] = None) -> List[str]:
-    """
-    Identify numerical features in a DataFrame.
-
-    Parameters:
-    ----------
-    df : pd.DataFrame
-        The DataFrame to analyze.
-    unique_value_threshold : Optional[int], optional
-        The maximum number of unique values a numerical column can have to be considered
-        categorical.
-        Defaults to 10% of the total rows.
-    ignore_cols : Optional[str], optional
-        The target feature to exclude from analysis, by default None.
-
-    Returns:
-    -------
-    List[str]
-        A list of column names considered numerical.
-    """
+def get_num_col(df: pd.DataFrame, unique_value_threshold: Optional[int] = 12, ignore_cols: Optional[str] = None) -> List[str]:
+    
     _handle_dataframe_errors(df)
 
     if ignore_cols and ignore_cols in df.columns:
@@ -109,34 +70,8 @@ def get_num_col(df: pd.DataFrame, unique_value_threshold: Optional[int] = 12,
 
     return numerical_features
 
-def get_binary_col(df: pd.DataFrame,
-                         categorical_feature_list: Optional[list] = None,
-                         ignore_cols: Optional[str] = None) -> List[str]:
-    """
-    Identify binary features (features with exactly two unique values) in a DataFrame.
-
-    Parameters:
-    - df : pandas.DataFrame
-        The DataFrame containing the features to analyze.
-    - categorical_feature_list : list, optional
-        List of specific categorical feature names to check for binary nature.
-        If None, all columns in the DataFrame will be checked.
-    - ignore_cols : str, optional
-        A specific target feature name to include in the check for binary nature.
-        Only applicable if `categorical_feature_list` is provided.
-
-    Returns:
-    - list
-        A list of names of binary features found in the DataFrame.
-
-    Example:
-    >>> df = pd.DataFrame({'feature1': ['A', 'B', 'A', 'B'],
-                           'feature2': ['X', 'Y', 'Y', 'X'],
-                           'target': ['Yes', 'No', 'No', 'Yes']})
-    >>> binary_features = find_binary_features(df, ['feature1', 'feature2'], 'target')
-    >>> print(binary_features)
-    ['target']
-    """
+def get_binary_col(df: pd.DataFrame, categorical_feature_list: Optional[list] = None, ignore_cols: Optional[str] = None) -> List[str]:
+    
     _handle_dataframe_errors(df)
     binary_features = []
 
@@ -163,19 +98,6 @@ def find_single_value_col(
     remove: bool = False,
     ignore_cols: Optional[str] = None
 ) -> Union[List[str], pd.DataFrame]:
-    """
-    Identify features in the DataFrame that contain a single unique value.
-
-    Parameters:
-    df (pd.DataFrame): The input DataFrame.
-    feature_list (Optional[List[str]]): List of features to check. If None, all features are checked.
-    remove (bool): If True, return the DataFrame with single-value features removed. If False, return a list of such features.
-    ignore_cols (Optional[str]): A feature to exclude from the check.
-
-    Returns:
-    Union[List[str], pd.DataFrame]: If remove is False, returns a list of features with a single unique value.
-                                    If remove is True, returns the DataFrame with those features removed.
-    """
 
     _handle_dataframe_errors(df)
 
