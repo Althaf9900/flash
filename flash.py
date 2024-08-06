@@ -1,5 +1,5 @@
 import math
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Dict
 
 import numpy as np
 import pandas as pd
@@ -154,3 +154,35 @@ def find_duplicate_col(df):
                 duplicate_cols.append(col_i, "&", col_j)
 
     return duplicate_cols
+
+def get_preprocessing_options(
+    is_normal: Optional[bool] = None,
+    has_na: Optional[bool] = None,
+    has_outlier: Optional[bool] = None
+) -> str:
+    settings = {}
+
+    if is_normal:
+        if has_na:
+            settings['missing_value_treatment'] = ['Remove', 'Mean imputation']
+        
+        if has_outlier:
+            settings['outlier_detection_method'] = 'Z-score method'
+            settings['outlier_treatment_methods'] = [
+                'Z-score based removing', 
+                'Z-score based capping', 
+                'Mean imputation'
+            ]
+    else:
+        if has_na:
+            settings['missing_value_treatment'] = ['Remove', 'Median imputation']
+        
+        if has_outlier:
+            settings['outlier_detection_method'] = 'IQR method'
+            settings['outlier_treatment_methods'] = [
+                'Percentile based removing', 
+                'Percentile based capping', 
+                'Median imputation'
+            ]
+            
+    return settings
