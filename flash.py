@@ -92,69 +92,6 @@ def get_binary_col(df: pd.DataFrame, categorical_feature_list: Optional[list] = 
 
     return binary_features
 
-def find_single_value_col(
-    df: pd.DataFrame,
-    feature_list: Optional[List[str]] = None,
-    remove: bool = False,
-    ignore_cols: Optional[str] = None
-) -> Union[List[str], pd.DataFrame]:
-
-    _handle_dataframe_errors(df)
-
-    if not isinstance(remove, bool):
-        raise TypeError("Parameter 'remove' must be a boolean")
-
-    single_value_features = []
-
-    if feature_list is None:
-        feature_list = df.columns.tolist()
-
-    # If ignore_cols is specified, add it to feature_list
-    if ignore_cols:
-        feature_list = [feature for feature in feature_list if feature != ignore_cols]
-
-    feature_list = [feature for feature in feature_list if feature in df.columns]
-
-    for feature in feature_list:
-        if df[feature].nunique() == 1:
-            single_value_features.append(feature)
-
-    if remove:
-        return df.drop(single_value_features, axis=1)
-    else:
-        return single_value_features
-
-def plot_num_col(df, num_feature_list=None, figsize=None, column_size = None):
-    # Plotting histograms of numerical features in the dataset
-
-    if figsize is None:
-        rows = 5*column_size
-        columns = 7 - column_size
-        plt.figure(figsize=(rows, columns))
-    else:
-        plt.figure(figsize=figsize)
-
-    rows = math.ceil(len(num_feature_list)/column_size)
-    for i, column in enumerate(num_feature_list):
-        plt.subplot(rows, column_size, i+1)
-        sns.histplot(df[column], kde=True)
-        plt.title(f'Histogram of {column}')
-
-    plt.tight_layout()
-    plt.show()
-
-def find_duplicate_col(df):
-    columns = df.columns.tolist()
-    duplicate_cols = []
-    for i in range(len(columns)):
-        for j in range(i + 1, len(columns)):
-            col_i = columns[i]
-            col_j = columns[j]
-            if (df[col_i] == df[col_j]).all():
-                duplicate_cols.append(col_i, "&", col_j)
-
-    return duplicate_cols
-
 def get_preprocessing_options(
     is_normal: Optional[bool] = None,
     has_na: Optional[bool] = None,
@@ -186,3 +123,66 @@ def get_preprocessing_options(
             ]
             
     return settings
+
+def find_col_with_single_val(
+    df: pd.DataFrame,
+    feature_list: Optional[List[str]] = None,
+    remove: bool = False,
+    ignore_cols: Optional[str] = None
+) -> Union[List[str], pd.DataFrame]:
+
+    _handle_dataframe_errors(df)
+
+    if not isinstance(remove, bool):
+        raise TypeError("Parameter 'remove' must be a boolean")
+
+    single_value_features = []
+
+    if feature_list is None:
+        feature_list = df.columns.tolist()
+
+    # If ignore_cols is specified, add it to feature_list
+    if ignore_cols:
+        feature_list = [feature for feature in feature_list if feature != ignore_cols]
+
+    feature_list = [feature for feature in feature_list if feature in df.columns]
+
+    for feature in feature_list:
+        if df[feature].nunique() == 1:
+            single_value_features.append(feature)
+
+    if remove:
+        return df.drop(single_value_features, axis=1)
+    else:
+        return single_value_features
+
+def find_duplicate_col(df):
+    columns = df.columns.tolist()
+    duplicate_cols = []
+    for i in range(len(columns)):
+        for j in range(i + 1, len(columns)):
+            col_i = columns[i]
+            col_j = columns[j]
+            if (df[col_i] == df[col_j]).all():
+                duplicate_cols.append(col_i, "&", col_j)
+
+    return duplicate_cols
+
+def plot_num_col(df, num_feature_list=None, figsize=None, column_size = None):
+    # Plotting histograms of numerical features in the dataset
+
+    if figsize is None:
+        rows = 5*column_size
+        columns = 7 - column_size
+        plt.figure(figsize=(rows, columns))
+    else:
+        plt.figure(figsize=figsize)
+
+    rows = math.ceil(len(num_feature_list)/column_size)
+    for i, column in enumerate(num_feature_list):
+        plt.subplot(rows, column_size, i+1)
+        sns.histplot(df[column], kde=True)
+        plt.title(f'Histogram of {column}')
+
+    plt.tight_layout()
+    plt.show()
