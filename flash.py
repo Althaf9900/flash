@@ -35,7 +35,7 @@ def get_cat_col(df: pd.DataFrame, unique_value_threshold: Optional[int] = 12, ig
     
     _handle_dataframe_errors(df)
 
-    if ignore_cols and ignore_cols in df.columns:
+    if isinstance(ignore_cols, list) or isinstance(ignore_cols, str):
         df = df.drop(ignore_cols, axis=1)
 
     categorical_features = []
@@ -59,9 +59,9 @@ def get_num_col(df: pd.DataFrame, unique_value_threshold: Optional[int] = 12, ig
     
     _handle_dataframe_errors(df)
 
-    if ignore_cols and ignore_cols in df.columns:
+    if isinstance(ignore_cols, list) or isinstance(ignore_cols, str):
         df = df.drop(ignore_cols, axis=1)
-
+        
     numerical_features = []
 
     for column in df.select_dtypes(include=[np.number]):
